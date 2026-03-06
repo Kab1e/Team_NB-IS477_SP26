@@ -11,7 +11,9 @@ To what extent can a multivariate predictive model accurately forecast the stren
 ** **
 ## Datasets
 Nominal Broad U.S. Dollar Index: https://fred.stlouisfed.org/series/DTWEXBGS
+
 CBOE Volatility Index (VIX): https://fred.stlouisfed.org/series/VIXCLS
+
 Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB
 
 ## Timeline 
