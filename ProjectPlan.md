@@ -6,6 +6,10 @@ The project will involve collecting time-series data from public sources such as
 ** **
 ## Team
 
+Nihanth Beeram - 
+
+Bob Zou - 
+
 ** **
 ## Research Question
 To what extent can a multivariate predictive model accurately forecast the strength of the US Dollar Index (DXY) on a one-month time horizon, using *US-Eurozone interest rate differentials*, *global market volatility (VIX)*, and *the US trade balance*?"
