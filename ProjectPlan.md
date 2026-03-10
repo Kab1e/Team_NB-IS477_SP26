@@ -27,31 +27,23 @@ Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://
 ## Timeline 
 
 **Project Planning** - By March 10th (Both)
-  
-  _Tasks:_
   * _Define area of research and research question_
   * _Identify datasets that will help answer the question_
   * _Create project plan and timeline_
 
 **Data Collection** - By March 13th (Both)
-  
-  Tasks:
-  * Download datasets from the sources
-  * Document metadata
+  * _Download datasets from the sources_
+  * _Document metadata and sources_
 
 **Data Cleaning and Integration** - By March 27th (Nihanth)
-  
-  Tasks:
-  * Standardize time formats of datasets
-  * Clean data and handle missing values in datasets
-  * Merge datasets by date 
+  * _Standardize time formats of datasets_
+  * _Clean data and handle missing values in datasets_
+  * _Merge datasets by date_
 
 **Exploratory Data Analysis** - By March 31st (Bob)
-  
-  Tasks:
-  * Visualize trends
-  * Identify and engineer features 
-  * Analyze correlations between factors 
+  * _Visualize trends between factors_
+  * _Identify and engineer features_ 
+  * _Analyze correlations between factors_ 
 
 Interim Status Report - March 31st
 
