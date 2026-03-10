@@ -16,13 +16,13 @@ To what extent can a multivariate predictive model accurately forecast the stren
 
 ** **
 ## Datasets
-Nominal Broad U.S. Dollar Index: https://fred.stlouisfed.org/series/DTWEXBGS
+Nominal Broad U.S. Dollar Index: https://fred.stlouisfed.org/series/DTWEXBGS (Common Attribute: Date/Time Period)
 
-CBOE Volatility Index (VIX): https://fred.stlouisfed.org/series/VIXCLS
+CBOE Volatility Index (VIX): https://fred.stlouisfed.org/series/VIXCLS (Common Attribute: Date/Time Period)
 
-US-Eurozone Interest Rate Differentials: https://fred.stlouisfed.org/graph/?g=TH3l 
+US-Eurozone Interest Rate Differentials: https://fred.stlouisfed.org/series/FEDFUNDS & https://fred.stlouisfed.org/series/ECBDFR (Common Attribute: Date/Time Period)
 
-Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB
+Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB (Common Attribute: Date/Time Period)
 
 ## Timeline 
 By End of Month, March, complete Data integration, Data quality and Data cleaning.
