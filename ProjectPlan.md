@@ -45,9 +45,18 @@ Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://
   * _Identify and engineer features_ 
   * _Analyze correlations between factors_ 
 
-Interim Status Report - March 31st
+**Interim Status Report** - March 31st
 
-Final Project Submission - May 3rd
+**Model Development and Evaluation** - By April 10th (Both)
+  * _Preprocess data for machine learning_
+  * _Test and experiment with various machine learning models_ 
+  * _Evaluate model performance using metrics such as accuracy score_
+
+**Results Interpretation and Final Report** - By April 10th (Both)
+  * _Interpret model results and create visualizations_
+  * _Prepare final project report and project documentation on GitHub_ 
+
+**Final Project Submission** - May 3rd
 
 ** **
 ## Constraints
