@@ -20,13 +20,15 @@ Nominal Broad U.S. Dollar Index: https://fred.stlouisfed.org/series/DTWEXBGS
 
 CBOE Volatility Index (VIX): https://fred.stlouisfed.org/series/VIXCLS
 
+US-Eurozone Interest Rate Differentials: https://fred.stlouisfed.org/graph/?g=TH3l 
+
 Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB
 
 ## Timeline 
 By End of Month, March, complete Data integration, Data quality and Data cleaning.
 
-
+** **
 ## Constraints
 
-
+** **
 ## Gaps
