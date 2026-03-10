@@ -1,5 +1,5 @@
 ## Overview
-The overall goal of this project is to develop a multivariate predictive model that forecasts the strength of US Dollar Index (DXY) over a one-month horizon. The US Dollar Index measures the value of the US dollar relative to a basket of other major currencies worldwide. Our approach is to create a model that uses macroeconomic and financial indicators that are known to influence exchange rates between currencies. Specifically, we will analyze the relationship between the DXY and three key predictors: the interest rate differential between the United States and the Eurozone, global market volatility measured by the VIX index, and the U.S. trade balance.
+The overall goal of this project is to develop a multivariate predictive model that forecasts the strength of US Dollar Index (DXY) over a one-month horizon. The US Dollar Index measures the value of the US dollar relative to a basket of other major currencies worldwide. The movement of this index is heavily influenced by international market dynamics and market sentiment. Our approach is to create a model that uses macroeconomic and financial indicators that are known to influence exchange rates between currencies. Specifically, we will analyze the relationship between the DXY and three key predictors: the interest rate differential between the United States and the Eurozone, global market volatility measured by the VIX index, and the U.S. trade balance.
 
 The project will involve collecting time-series data from public sources such as FRED, cleaning/integrating the datasets, and building predictive models using Python. Instead of focusing on one specific ML model, we will train and evaluate several machine learning models to determine which one provides the most accurate forecast for DXY. 
 
@@ -25,7 +25,32 @@ US-Eurozone Interest Rate Differentials: https://fred.stlouisfed.org/series/FEDF
 Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB (Common Attribute: Date/Time Period)
 
 ## Timeline 
-By End of Month, March, complete Data integration, Data quality and Data cleaning.
+Project Planning - By March 10th (Both)
+  Tasks:
+  * Define area of research and research question
+  * Identify datasets that will help answer the question
+  * Create project plan and timeline 
+
+Data Collection - By March 13th (Both)
+  Tasks:
+  * Download datasets from the sources
+  * Document metadata
+
+Data Cleaning and Integration - By March 27th (Nihanth)
+  Tasks:
+  * Standardize time formats of datasets
+  * Clean data and handle missing values in datasets
+  * Merge datasets by date 
+
+Exploratory Data Analysis - By March 31st (Bob)
+  Tasks:
+  * Visualize trends
+  * Identify and engineer features 
+  * Analyze correlations between factors 
+
+Interim Status Report - March 31st
+
+Final Project Submission - May 3rd
 
 ** **
 ## Constraints
