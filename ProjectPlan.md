@@ -28,10 +28,10 @@ Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://
 
 **Project Planning** - By March 10th (Both)
   
-  Tasks:
-  * Define area of research and research question
-  * Identify datasets that will help answer the question
-  * Create project plan and timeline 
+  _Tasks:_
+  * _Define area of research and research question_
+  * _Identify datasets that will help answer the question_
+  * _Create project plan and timeline_
 
 **Data Collection** - By March 13th (Both)
   
