@@ -25,24 +25,29 @@ US-Eurozone Interest Rate Differentials: https://fred.stlouisfed.org/series/FEDF
 Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://fred.stlouisfed.org/series/BOPGSTB (Common Attribute: Date/Time Period)
 
 ## Timeline 
-Project Planning - By March 10th (Both)
+
+**Project Planning** - By March 10th (Both)
+  
   Tasks:
   * Define area of research and research question
   * Identify datasets that will help answer the question
   * Create project plan and timeline 
 
-Data Collection - By March 13th (Both)
+**Data Collection** - By March 13th (Both)
+  
   Tasks:
   * Download datasets from the sources
   * Document metadata
 
-Data Cleaning and Integration - By March 27th (Nihanth)
+**Data Cleaning and Integration** - By March 27th (Nihanth)
+  
   Tasks:
   * Standardize time formats of datasets
   * Clean data and handle missing values in datasets
   * Merge datasets by date 
 
-Exploratory Data Analysis - By March 31st (Bob)
+**Exploratory Data Analysis** - By March 31st (Bob)
+  
   Tasks:
   * Visualize trends
   * Identify and engineer features 
