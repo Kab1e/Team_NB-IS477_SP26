@@ -24,3 +24,9 @@ Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB): https://
 
 ## Timeline 
 By End of Month, March, complete Data integration, Data quality and Data cleaning.
+
+
+## Constraints
+
+
+## Gaps
