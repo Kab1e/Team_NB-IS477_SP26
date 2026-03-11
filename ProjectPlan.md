@@ -1,14 +1,16 @@
 ## Overview
 The overall goal of this project is to develop a multivariate predictive model that forecasts the strength of US Dollar Index (DXY) over a one-month horizon. The US Dollar Index measures the value of the US dollar relative to a basket of other major currencies worldwide. The movement of this index is heavily influenced by international market dynamics and market sentiment. Our approach is to create a model that uses macroeconomic and financial indicators that are known to influence exchange rates between currencies. Specifically, we will analyze the relationship between the DXY and three key predictors: the interest rate differential between the United States and the Eurozone, global market volatility measured by the VIX index, and the U.S. trade balance.
 
-The project will involve collecting time-series data from public sources such as FRED, cleaning/integrating the datasets, and building predictive models using Python. Instead of focusing on one specific ML model, we will train and evaluate several machine learning models to determine which one provides the most accurate forecast for DXY. 
+The project will involve collecting time-series data from public sources such as FRED, cleaning/integrating the datasets, and building predictive models using Python. After cleaning and preparing the data for analysis, we will look at trends and correlations between factors to get a better understanding of the data. Instead of focusing on one specific ML model, we will train and evaluate several machine learning models to determine which one provides the most accurate forecast for DXY. 
 
 ** **
 ## Team
 
-Nihanth Beeram - 
+Nihanth Beeram - Data cleaning and integration 
 
-Bob Zou - 
+Bob Zou - Exploratory data analysis 
+
+Both of us will collabrate on the remaining parts such as model building and testing
 
 ** **
 ## Research Question
