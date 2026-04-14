@@ -1,6 +1,54 @@
-## Update on Tasks
+# Update on Tasks
 
-# Noticable Error Found From Exploratory Analysis
+## Data Collection and Acquisation 
+
+All five datasets were programatically acquired using the FRED (Federal Reserve Economic Data) API instead of manual CSV downloads. The API key is stored securely in an `.env` file which is excluded from the repository via `.gitignore`. The five series are Nominal Broad USD Index (DTWEXBGS), CBOE Volatility Index (VIXCLS), US Federal Funds Rate (FEDFUNDS), ECB Deposit Facility Rate (ECB), and US Trade Balance (BOPGSTB).
+
+** **
+
+## Data Cleaning and Integration
+
+The raw series data need to be cleaned before it could be used for modeling. Before cleaning, the five series were converted into individual dataframes with named columns. For missing values within each dataframe, FRED represents missing observations as `NaN`. All five dataframes were scanned and their missing values were dropped using `dropna()` before further processing. The data indexes were converted to `datatime` standardized to `YYYY-MM-DD` format. As mentioned in the project plan, we had to standardize the times format of the series as DXY and VIX are published as daily series while FEDFUNDS, ECB rate, and trade balance are published as monthly series. The daily series were resampled to monthly — DXY via `resample('ME').last()` and VIX via `resample('ME').mean()`. The monthly series were aligned to month-end format. The overall data cleaning process is shown in the [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb)
+
+
+After cleaning the raw series data, the five dataframes were merged into a single unified monthly dataset. This was done by joining the five dataframes on the date index using `how='inner'`, which produced 241 monthly observations from 2006-01-31 to 2026-01-31. The start date is constrained by the DXY series (DTWEXBGS) which begins in January 2006. The integration process is shown in [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and the final cleaned dataset is [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
+
+** **
+
+## Exploratory Data Analysis
+
+From the data integration process, two additional columns were derived after merging the dataframes. The first column is `INT_DIFF` which is computed as `FEDFUNDS - ECB_RATE`, representing the US-Eurozone interest rate differential which is a key predictor of exchange rate movement. The second column is `DXY_next` which is computed as DXY.shift(-1), the one-month-ahead DXY value which serves as the prediction target for all models. 
+
+EDA was conducted on the cleaned dataset and we primarily looked at the correlations between features within the cleaned dataset. This correlation heatmap is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
+
+** **
+
+## Model Development and Evaluation 
+
+Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
+
+
+
+** **
+
+# Updated Timeline 
+**Data Collection and Acquisation** - Completed
+
+**Data Cleaning and Integration** - Completed
+
+**Exploratory Data Analysis** - Completed
+
+**Model Development and Evaluation** - In Progress (Will Complete by **April 25th**)
+
+**Results Interpretation and Final Report** - Not Yet Started (Will Complete by **May 1st**)
+
+**Final Project Submission** - **May 3rd**
+
+** **
+
+# Problems & Future Steps
+
+## Noticable Error Found From Exploratory Analysis
 
 While attempting to predict one-month-ahead values of the U.S. Dollar Index (DXY) using linear regression models with macroeconomic features (VIX, Fed Funds Rate, ECB Rate, Trade Balance, Interest Rate Differential) over the period January 2006 through January 2026. A suite of seven linear models was tuned via grid search with time-series cross-validation, and the best model was evaluated on a held-out test set covering the final 25% of the sample.
 
@@ -14,7 +62,7 @@ The visual impression of accuracy is therefore a direct artifact of plotting a n
 
 ** **
 
-# Looking Forward
+## Looking Forward
 
 > Reformulate the target
 >> Replace DXY_next with the next-period log return: `np.log(DXY).diff().shift(-1)`. Returns are near-stationary and not dominated by their own lag, so any predictive signal you find will be real rather than an artifact of autocorrelation.
@@ -28,4 +76,10 @@ The visual impression of accuracy is therefore a direct artifact of plotting a n
 ## Data
 
 Our data are primarily from Federal Reserve St. Louis, accessed via FRED API. The dataset consists of 241 monthly observations from January 2006 to January 2026. 
+
+** **
+
+# Contribution Summary
+
+Nihanth - For this current milestone, I did the data cleaning and integration parts of the project. I collected the raw series data from the FRED API and converted the raw series into dataframes. After this, I cleaned the dataframes and removed the missing values from it. After cleaning the dataframes, I combined the five dataframes into a single unified monthly dataset by resampling the daily series to monthly and adjusting the monthly series. I worked on [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
