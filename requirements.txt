@@ -1,0 +1,6 @@
+pandas
+fredapi
+numpy
+matplotlib
+dotenv
+seaborn
