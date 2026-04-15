@@ -3,14 +3,37 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 
 ## Table of Contents
+[Milestones](#milestones)
+- [Updated Timeline](#updated-timeline)
 - [Data Collection and Acquisation](#data-collection-and-acquisation)
 - [Data Cleaning and Integration](#data-cleaning-and-integration)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Model Development and Evaluation](#model-development-and-evaluation )
-- [Updated Timeline](#updated-timeline)
-- [Problems & Future Steps](#problems-&-future-steps)
-- [Data](#data)
-- [Contribution Summary](#contribution-summary)
+
+[Problems & Future Steps](#problems-&-future-steps)
+- [Noticable Error Found From Exploratory Analysis](#noticable-error-found-from-exploratory-analysis)
+- [Looking Forward](#looking-forward)
+
+[Data](#data)
+
+[Contribution Summary](#contribution-summary)
+
+
+# Milestones
+
+## Updated Timeline 
+**Data Collection and Acquisation** - Completed
+
+**Data Cleaning and Integration** - Completed
+
+**Exploratory Data Analysis** - Completed
+
+**Model Development and Evaluation** - In Progress (Will Complete by **April 25th**)
+
+**Results Interpretation and Final Report** - Not Yet Started (Will Complete by **May 1st**)
+
+**Final Project Submission** - **May 3rd**
+
 
 
 ## Data Collection and Acquisation 
@@ -37,20 +60,6 @@ EDA was conducted on the cleaned dataset and we primarily looked at the correlat
 
 Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
-
-## Updated Timeline 
-**Data Collection and Acquisation** - Completed
-
-**Data Cleaning and Integration** - Completed
-
-**Exploratory Data Analysis** - Completed
-
-**Model Development and Evaluation** - In Progress (Will Complete by **April 25th**)
-
-**Results Interpretation and Final Report** - Not Yet Started (Will Complete by **May 1st**)
-
-**Final Project Submission** - **May 3rd**
-
 ** **
 
 # Problems & Future Steps
@@ -67,7 +76,6 @@ The single most important diagnostic for any time-series forecasting model is co
 
 The visual impression of accuracy is therefore a direct artifact of plotting a nearly-identity mapping against its own input, shifted by one period. It is not evidence that the model has learned anything about the economic drivers of the dollar. 
 
-** **
 
 ## Looking Forward
 
@@ -86,7 +94,7 @@ We are planning to deliver a `Streamlit` web app as our final artifact, which wi
 
 ** **
 
-## Data
+# Data
 
 Our data are primarily from Federal Reserve St. Louis, accessed via FRED API. The dataset consists of 241 monthly observations from January 2006 to January 2026. 
 
@@ -94,6 +102,6 @@ Our data are primarily from Federal Reserve St. Louis, accessed via FRED API. Th
 
 # Contribution Summary
 
-Nihanth - For this current milestone, I did the data cleaning and integration parts of the project. I collected the raw series data from the FRED API and converted the raw series into dataframes. After this, I cleaned the dataframes and removed the missing values from it. After cleaning the dataframes, I combined the five dataframes into a single unified monthly dataset by resampling the daily series to monthly and adjusting the monthly series. I worked on [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
+__Nihanth__ - For this current milestone, I did the data cleaning and integration parts of the project. I collected the raw series data from the FRED API and converted the raw series into dataframes. After this, I cleaned the dataframes and removed the missing values from it. After cleaning the dataframes, I combined the five dataframes into a single unified monthly dataset by resampling the daily series to monthly and adjusting the monthly series. I worked on [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
-Bob — As of April 14 (the day before Tax Day), I have completed the exploratory analysis for this project, including the major issue identified above [briefly name it]. After Nihanth finished cleaning and integrating the four FRED time series (DXY, VIX, US-Eurozone interest rate differential, and US trade balance) into a unified dataset, I took the merged data and conducted a thorough exploratory analysis to understand its underlying structure and relationships before model development.Beyond the EDA, I also reformatted and restructured several of our project deliverables to streamline them for downstream use in the final product. This included setting up [requirements.txt](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/requirements.txt), [.gitignore](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/.gitignore), and [utils.py](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/utils.py) (codes are primarily from Nihanth's [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb)). 
+__Bob__ — As of April 14 (the day before Tax Day), I have completed the exploratory analysis for this project, including the major issue identified above [briefly name it]. After Nihanth finished cleaning and integrating the four FRED time series (DXY, VIX, US-Eurozone interest rate differential, and US trade balance) into a unified dataset, I took the merged data and conducted a thorough exploratory analysis to understand its underlying structure and relationships before model development.Beyond the EDA, I also reformatted and restructured several of our project deliverables to streamline them for downstream use in the final product. This included setting up [requirements.txt](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/requirements.txt), [.gitignore](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/.gitignore), and [utils.py](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/utils.py) (codes are primarily from Nihanth's [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb)). 
