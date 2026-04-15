@@ -2,7 +2,7 @@
 We maintain our conviction in a multivariate framework for one-month DXY forecasting, anchored on US-Eurozone rate differentials, VIX, and the US trade balance. Since the project plan of March 10, the team has executed on the first three milestones: data collection, cleaning and integration, and exploratory analysis. Findings to date support the theoretical framework motivating our predictor selection, though one structural issue in the data has been identified and is discussed below. The team remains on track for the May 3 final submission.
 
 
-## Table of Contents
+### Table of Contents
 [__Milestones__](#milestones)
 - [Updated Timeline](#updated-timeline)
 - [Data Collection and Acquisation](#data-collection-and-acquisation)
@@ -19,9 +19,9 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 [__Contribution Summary__](#contribution-summary)
 
 
-# Milestones
+## Milestones
 
-## Updated Timeline 
+### Updated Timeline 
 **Data Collection and Acquisation** - Completed
 
 **Data Cleaning and Integration** - Completed
@@ -36,12 +36,12 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 
 
-## Data Collection and Acquisation 
+### Data Collection and Acquisation 
 
 All five datasets were programatically acquired using the FRED (Federal Reserve Economic Data) API instead of manual CSV downloads. The API key is stored securely in an `.env` file which is excluded from the repository via `.gitignore`. The five series are Nominal Broad USD Index (DTWEXBGS), CBOE Volatility Index (VIXCLS), US Federal Funds Rate (FEDFUNDS), ECB Deposit Facility Rate (ECB), and US Trade Balance (BOPGSTB).
 
 
-## Data Cleaning and Integration
+### Data Cleaning and Integration
 
 The raw series data need to be cleaned before it could be used for modeling. Before cleaning, the five series were converted into individual dataframes with named columns. For missing values within each dataframe, FRED represents missing observations as `NaN`. All five dataframes were scanned and their missing values were dropped using `dropna()` before further processing. The data indexes were converted to `datatime` standardized to `YYYY-MM-DD` format. As mentioned in the project plan, we had to standardize the times format of the series as DXY and VIX are published as daily series while FEDFUNDS, ECB rate, and trade balance are published as monthly series. The daily series were resampled to monthly — DXY via `resample('ME').last()` and VIX via `resample('ME').mean()`. The monthly series were aligned to month-end format. The overall data cleaning process is shown in the [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb)
 
@@ -49,22 +49,22 @@ The raw series data need to be cleaned before it could be used for modeling. Bef
 After cleaning the raw series data, the five dataframes were merged into a single unified monthly dataset. This was done by joining the five dataframes on the date index using `how='inner'`, which produced 241 monthly observations from 2006-01-31 to 2026-01-31. The start date is constrained by the DXY series (DTWEXBGS) which begins in January 2006. The integration process is shown in [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and the final cleaned dataset is [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
 
-## Exploratory Data Analysis
+### Exploratory Data Analysis
 
 From the data integration process, two additional columns were derived after merging the dataframes. The first column is `INT_DIFF` which is computed as `FEDFUNDS - ECB_RATE`, representing the US-Eurozone interest rate differential which is a key predictor of exchange rate movement. The second column is `DXY_next` which is computed as DXY.shift(-1), the one-month-ahead DXY value which serves as the prediction target for all models. 
 
 EDA was conducted on the cleaned dataset and we primarily looked at the correlations between features within the cleaned dataset. This correlation heatmap is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
 
-## Model Development and Evaluation 
+### Model Development and Evaluation 
 
 Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
 ** **
 
-# Problems & Future Steps
+## Problems & Future Steps
 
-## Noticable Error Found From Exploratory Analysis
+### Noticable Error Found From Exploratory Analysis
 
 While attempting to predict one-month-ahead values of the U.S. Dollar Index (DXY) using linear regression models with macroeconomic features (VIX, Fed Funds Rate, ECB Rate, Trade Balance, Interest Rate Differential) over the period January 2006 through January 2026. A suite of seven linear models was tuned via grid search with time-series cross-validation, and the best model was evaluated on a held-out test set covering the final 25% of the sample.
 
@@ -77,7 +77,7 @@ The single most important diagnostic for any time-series forecasting model is co
 The visual impression of accuracy is therefore a direct artifact of plotting a nearly-identity mapping against its own input, shifted by one period. It is not evidence that the model has learned anything about the economic drivers of the dollar. 
 
 
-## Looking Forward
+### Looking Forward
 
 Data:
 > Reformulate the target
@@ -94,13 +94,13 @@ We are planning to deliver a `Streamlit` web app as our final artifact, which wi
 
 ** **
 
-# Data
+## Data
 
 Our data are primarily from Federal Reserve St. Louis, accessed via FRED API. The dataset consists of 241 monthly observations from January 2006 to January 2026. 
 
 ** **
 
-# Contribution Summary
+## Contribution Summary
 
 __Nihanth__ - For this current milestone, I did the data cleaning and integration parts of the project. I collected the raw series data from the FRED API and converted the raw series into dataframes. After this, I cleaned the dataframes and removed the missing values from it. After cleaning the dataframes, I combined the five dataframes into a single unified monthly dataset by resampling the daily series to monthly and adjusting the monthly series. I worked on [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
