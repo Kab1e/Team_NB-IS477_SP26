@@ -1,4 +1,5 @@
-# Update on Tasks
+# Interim Status Report
+We maintain our conviction in a multivariate framework for one-month DXY forecasting, anchored on US-Eurozone rate differentials, VIX, and the US trade balance. Since the project plan of March 10, the team has executed on the first three milestones: data collection, cleaning and integration, and exploratory analysis. Findings to date support the theoretical framework motivating our predictor selection, though one structural issue in the data has been identified and is discussed below. The team remains on track for the May 3 final submission.
 
 ## Data Collection and Acquisation 
 
@@ -26,8 +27,6 @@ EDA was conducted on the cleaned dataset and we primarily looked at the correlat
 ## Model Development and Evaluation 
 
 Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
-
-
 
 ** **
 
@@ -64,6 +63,7 @@ The visual impression of accuracy is therefore a direct artifact of plotting a n
 
 ## Looking Forward
 
+Data:
 > Reformulate the target
 >> Replace DXY_next with the next-period log return: `np.log(DXY).diff().shift(-1)`. Returns are near-stationary and not dominated by their own lag, so any predictive signal you find will be real rather than an artifact of autocorrelation.
 
@@ -72,6 +72,11 @@ The visual impression of accuracy is therefore a direct artifact of plotting a n
 
 > Re-Examine Models
 >> Rerun GridSearchCV on the new formulation. In the meantime, add in more complex model features like LSTM.
+
+Final Deliverable:
+We are planning to deliver a `Streamlit` web app as our final artifact, which will allow users to interact with the trained model, visualize DXY forecasts against historical data, and compare the performance of the different machine learning models we evaluate. Detailed features and layout will be finalized soon.
+
+** **
 
 ## Data
 
@@ -83,3 +88,4 @@ Our data are primarily from Federal Reserve St. Louis, accessed via FRED API. Th
 
 Nihanth - For this current milestone, I did the data cleaning and integration parts of the project. I collected the raw series data from the FRED API and converted the raw series into dataframes. After this, I cleaned the dataframes and removed the missing values from it. After cleaning the dataframes, I combined the five dataframes into a single unified monthly dataset by resampling the daily series to monthly and adjusting the monthly series. I worked on [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
+Bob — As of April 14 (the day before Tax Day), I have completed the exploratory analysis for this project, including the major issue identified above [briefly name it]. After Nihanth finished cleaning and integrating the four FRED time series (DXY, VIX, US-Eurozone interest rate differential, and US trade balance) into a unified dataset, I took the merged data and conducted a thorough exploratory analysis to understand its underlying structure and relationships before model development.Beyond the EDA, I also reformatted and restructured several of our project deliverables to streamline them for downstream use in the final product. This included setting up [requirements.txt](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/requirements.txt), [.gitignore](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/.gitignore), and [utils.py](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/utils.py) (codes are primarily from Nihanth's [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb)). 
