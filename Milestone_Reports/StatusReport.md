@@ -59,7 +59,7 @@ EDA was conducted on the cleaned dataset and we primarily looked at the correlat
 
 ### Model Development and Evaluation 
 
-Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
+Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in [__Problems & Future Steps__](#problems--future-steps). From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
 ** **
 
