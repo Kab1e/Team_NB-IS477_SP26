@@ -1,11 +1,22 @@
 # Interim Status Report
 We maintain our conviction in a multivariate framework for one-month DXY forecasting, anchored on US-Eurozone rate differentials, VIX, and the US trade balance. Since the project plan of March 10, the team has executed on the first three milestones: data collection, cleaning and integration, and exploratory analysis. Findings to date support the theoretical framework motivating our predictor selection, though one structural issue in the data has been identified and is discussed below. The team remains on track for the May 3 final submission.
 
+
+## Table of Contents
+- [Data Collection and Acquisation](#data-collection-and-acquisation)
+- [Data Cleaning and Integration](#data-cleaning-and-integration)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Model Development and Evaluation](#model-development-and-evaluation )
+- [Updated Timeline](#updated-timeline)
+- [Problems & Future Steps](#problems-&-future-steps)
+- [Data](#data)
+- [Contribution Summary](#contribution-summary)
+
+
 ## Data Collection and Acquisation 
 
 All five datasets were programatically acquired using the FRED (Federal Reserve Economic Data) API instead of manual CSV downloads. The API key is stored securely in an `.env` file which is excluded from the repository via `.gitignore`. The five series are Nominal Broad USD Index (DTWEXBGS), CBOE Volatility Index (VIXCLS), US Federal Funds Rate (FEDFUNDS), ECB Deposit Facility Rate (ECB), and US Trade Balance (BOPGSTB).
 
-** **
 
 ## Data Cleaning and Integration
 
@@ -14,7 +25,6 @@ The raw series data need to be cleaned before it could be used for modeling. Bef
 
 After cleaning the raw series data, the five dataframes were merged into a single unified monthly dataset. This was done by joining the five dataframes on the date index using `how='inner'`, which produced 241 monthly observations from 2006-01-31 to 2026-01-31. The start date is constrained by the DXY series (DTWEXBGS) which begins in January 2006. The integration process is shown in [data_cleaning.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/data_cleaning.ipynb) and the final cleaned dataset is [dxy_dataset.csv](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/dxy_dataset.csv)
 
-** **
 
 ## Exploratory Data Analysis
 
@@ -22,15 +32,13 @@ From the data integration process, two additional columns were derived after mer
 
 EDA was conducted on the cleaned dataset and we primarily looked at the correlations between features within the cleaned dataset. This correlation heatmap is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
-** **
 
 ## Model Development and Evaluation 
 
 Seven linear models was trained and tuned via grid search with time-series cross-validation on 75% of the data, evaluated on a held-out test set covering the final 25% of the sample (approximately 60 observations). The best performing model was Lasso but a formal comparison against a trivial persistence baseline — simply using the current month's DXY as the prediction for next month — reveals that the tuned model achieves only a 1.5% improvement in RMSE. This problem is further explained in ***. From this initial model development, we decided to rebuild the features and add more complex models to GridSearchCV like LSTM. The initial model development is shown in [Exploratory_Analysis.ipynb](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/Exploratory_Analysis.ipynb). 
 
-** **
 
-# Updated Timeline 
+## Updated Timeline 
 **Data Collection and Acquisation** - Completed
 
 **Data Cleaning and Integration** - Completed
