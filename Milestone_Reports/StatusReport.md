@@ -10,7 +10,7 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 - [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Model Development and Evaluation](#model-development-and-evaluation )
 
-[__Problems & Future Steps__](#problems-&-future-steps)
+[__Problems & Future Steps__](#problems--future-steps)
 - [Noticable Error Found From Exploratory Analysis](#noticable-error-found-from-exploratory-analysis)
 - [Looking Forward](#looking-forward)
 
