@@ -4,6 +4,7 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 ### Table of Contents
 [__Updated Timeline__](#updated-timeline)
+
 [__Milestones__](#milestones)
 - [Data Collection and Acquisation](#data-collection-and-acquisation)
 - [Data Cleaning and Integration](#data-cleaning-and-integration)
