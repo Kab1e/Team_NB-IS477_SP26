@@ -3,8 +3,8 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 
 ### Table of Contents
+[__Updated Timeline__](#updated-timeline)
 [__Milestones__](#milestones)
-- [Updated Timeline](#updated-timeline)
 - [Data Collection and Acquisation](#data-collection-and-acquisation)
 - [Data Cleaning and Integration](#data-cleaning-and-integration)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
@@ -19,9 +19,7 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 [__Contribution Summary__](#contribution-summary)
 
 
-## Milestones
-
-### Updated Timeline 
+## Updated Timeline 
 **Data Collection and Acquisation** - Completed
 
 **Data Cleaning and Integration** - Completed
@@ -35,6 +33,7 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 **Final Project Submission** - **May 3rd**
 
 
+## Milestones
 
 ### Data Collection and Acquisation 
 
