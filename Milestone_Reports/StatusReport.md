@@ -3,20 +3,20 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 
 ## Table of Contents
-[Milestones](#milestones)
+[__Milestones__](#milestones)
 - [Updated Timeline](#updated-timeline)
 - [Data Collection and Acquisation](#data-collection-and-acquisation)
 - [Data Cleaning and Integration](#data-cleaning-and-integration)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
 - [Model Development and Evaluation](#model-development-and-evaluation )
 
-[Problems & Future Steps](#problems-&-future-steps)
+[__Problems & Future Steps__](#problems-&-future-steps)
 - [Noticable Error Found From Exploratory Analysis](#noticable-error-found-from-exploratory-analysis)
 - [Looking Forward](#looking-forward)
 
-[Data](#data)
+[__Data__](#data)
 
-[Contribution Summary](#contribution-summary)
+[__Contribution Summary__](#contribution-summary)
 
 
 # Milestones
