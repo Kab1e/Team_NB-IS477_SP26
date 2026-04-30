@@ -27,11 +27,11 @@ We maintain our conviction in a multivariate framework for one-month DXY forecas
 
 **Exploratory Data Analysis** - Completed
 
-**Model Development and Evaluation** - In Progress (Will Complete by **April 25th**)
+**Model Development and Evaluation** - In Progress (Will Complete by **May 1st**)
 
-**Results Interpretation and Final Report** - Not Yet Started (Will Complete by **May 1st**)
+**Results Interpretation and Final Report** - Not Yet Started (Will Complete by **May 3rd**)
 
-**Final Project Submission** - **May 3rd**
+**Final Project Submission** - **May 6th**
 
 ** **
 
