@@ -250,6 +250,42 @@ ___
 ---
 
 ## Reproducing the Dashboard
+This section will go over how exactly someone can reproduce our streamlit dashboard from setting up the environment to verifying the outputs
+
+### Step 1: Clone the Repository
+>
+> ```bash
+> git clone https://github.com/[anonymized]/Team_NB-IS477_SP26.git
+> cd Team_NB-IS477_SP26
+> ```
+
+### Step 2: Set Up the Python Environment
+>
+**Using pip**
+> ```bash
+> python -m venv venv
+> source venv/bin/activate
+> pip install -r requirements.txt
+> ```
+>
+**Using conda**
+> ```bash
+> conda create -n is477-project python=3.12.2
+> conda activate is477-project
+> pip install -r requirements.txt
+> ```
+
+### Step 3: Set Up Environment Variables
+To acquire the data, an `.env` file with your own API key from Fred is needed. You can get your own free API key from [FRED]( https://fred.stlouisfed.org) by creating an account for free. After getting an API key, create an .env file in the root directory of the project. It should look like:
+
+> `'FRED_API_KEY' = "YOUR_API_KEY"`
+
+### Step 4: Run the Project and Verify the Outputs
+To run the pipeline, you should put this into the terminal: `python scripts/run_all.py`. After running the pipeline, confirm that the following files exist: 
+
+---
+
+## Workflow
 
 
 ---
