@@ -8,7 +8,7 @@ The movement of US Dollar Index is heavily influenced by international market dy
 
 For our file structure, all datasets have a raw CSV file and SHA hash, which located within their respective folders in the ``data/`` directory. The integrated dataset has a cleaned CSV file and a JSON file documenting the overall cleaning history. This data is also located directly in ``data/``. Scripts for data acquisation, hash generation, quality analysis, data cleaning, integration, and analysis (streamlit dashboard) are in ``scripts/``. A ``outputs/`` folder contains the models, and ``requirements.txt`` records all software dependencies.
 
-To summarize our findings, ***
+To summarize our findings, our initial model formulation appeared to perform well but was illusory: the 0.99 correlation between DXY and DXY_next meant the model had learned the identity function, consistent with the Meese-Rogoff puzzle (1983). After reformulating the target as the log return of DXY and rebuilding features as first differences, we obtained meaningful results. VIX and the US-Eurozone interest rate differential emerged as the only statistically significant predictors. Across all model families tested, R-squared values ranged from 0.05–0.08, which is a meaningful result in FX forecasting where beating a random walk is notoriously difficult. Key challenges included the small sample size of 241 observations ruling out deep learning approaches, frequency mismatches across FRED series, and SARIMAX convergence issues. Future improvements could include adding lagged DXY returns, commodity prices, or CFTC positioning data as additional features.
 
 ---
 
