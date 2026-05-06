@@ -227,6 +227,8 @@ def training():
     joblib.dump(best_linear_model, "outputs/models/linear_model.joblib")
     joblib.dump(best_svr, "outputs/models/svr.joblib")
 
+    print(f"HistGradientBoosint, SARIMAX, Linear and SVR models saved to outputs/models")
+
     return best_HistGB, best_sarimax, best_linear_model, best_svr
 
 def train_models(TRAIN_AGAIN = False):
@@ -245,7 +247,13 @@ def train_models(TRAIN_AGAIN = False):
         best_linear_model = joblib.load("outputs/models/linear_model.joblib")
         best_svr = joblib.load("outputs/models/svr.joblib")
 
+        print(f"\n✅ HistGradientBoosting, SARIMAX, Linear, and SVR models loaded.")
+        print(f"\n🔄 To train again, set to train_models(TRAIN_AGAIN = True).")
+
     else:
         best_HistGB, best_sarimax, best_linear_model, best_svr = training()
 
     return best_HistGB, best_sarimax, best_linear_model, best_svr
+
+if __name__ == "__main__":
+    train_models()
