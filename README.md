@@ -184,12 +184,26 @@ ___
 ---
 
 ## Data Cleaning
-
+For this project, we required five seperate datasets for integration and analysis. As all of five datasets came from the same source (FRED API), not too much cleaning was required but the datasets had to be extensively standardized. 
 
 ---
 
 ## Data Integration
 
+**Merge Statistics:**
+* DXY: 5,305 observations
+* VIX: 9,480 observations
+* FEDFUNDS: 862 observations
+* ECB_RATE: 9,987 observations
+* TRADE_BAL: 411 observations
+
+After resampling all datasets to a common monthly frequency and performing an inner join across all datasets, the final integrated dataset contained:
+
+**Final merged dataset size:** 241 observations
+
+**Overall merge rate:** 58.64%
+
+**Assessment:** Although the merge rate of 58.64% represents a reduction in sample size, it shouldn't be treated as data loss in a traditional sense but as a necessary trade-off. 
 
 ___
 
