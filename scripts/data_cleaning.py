@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# Load raw data
-
+#Load raw data
 def load_raw_data():
 
     def read_raw(name):
@@ -11,33 +10,42 @@ def load_raw_data():
 
         df["DATE"] = pd.to_datetime(df["DATE"])
         df = df.sort_values("DATE")
-
         df = df.set_index("DATE")
+
         return df
 
-    dxy   = read_raw("DXY")
-    vix   = read_raw("VIX")
-    ff    = read_raw("FEDFUNDS")
-    ecb   = read_raw("ECB_RATE")
-    trade = read_raw("TRADE_BAL")
+    return (
+        read_raw("DXY"),
+        read_raw("VIX"),
+        read_raw("FEDFUNDS"),
+        read_raw("ECB_RATE"),
+        read_raw("TRADE_BAL")
+    )
 
-    return dxy, vix, ff, ecb, trade
 
+def clean_series(dxy, vix, ff, ecb, trade):
+    # Handle missing values within each dataset first
+    dxy = dxy.dropna()
+    vix = vix.dropna()
+    ff = ff.dropna()
+    ecb = ecb.dropna()
+    trade = trade.dropna()
 
-# Clean datasets and integrate them into a single dataset
-
-def load_data():
-
-    dxy, vix, ff, ecb, trade = load_raw_data()
-
-    # Monthly alignment 
+    # Monthly alignment AFTER cleaning
     dxy   = dxy.resample("ME").last()
     vix   = vix.resample("ME").mean()
     ff    = ff.resample("ME").last()
     ecb   = ecb.resample("ME").last()
     trade = trade.resample("ME").last()
 
-    # Merge
+    return dxy, vix, ff, ecb, trade
+
+def load_data():
+
+    dxy, vix, ff, ecb, trade = load_raw_data()
+
+    dxy, vix, ff, ecb, trade = clean_series(dxy, vix, ff, ecb, trade)
+
     merged = (
         dxy
         .join(vix, how="inner")
@@ -61,7 +69,6 @@ def load_data():
 
     merged = merged.dropna().reset_index()
 
-    # Time features
     merged["YEAR"] = merged["DATE"].dt.year
     merged["MONTH"] = merged["DATE"].dt.month
     merged["QUARTER"] = merged["DATE"].dt.quarter
