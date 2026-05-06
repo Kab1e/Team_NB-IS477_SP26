@@ -140,7 +140,7 @@ Both series are pulled separately via the FRED API and converted into a CSV file
 ``ECBDFR`` - ECB Deposit Facility Rate (%)
 
 **Description:**
-These datasets shows the interest rates in the U.S. and Eurozone respectively. The merged dataset will have a variable called ``INT_DIFF`` which will capture the interest rate differentials between US and Eurozone for each corresponding time period which is a key driver of exchange rate movements and capital flows. 
+These datasets shows the interest rates for banks in the U.S. and Eurozone respectively. The merged dataset will have a variable called ``INT_DIFF`` which will capture the interest rate differentials between US and Eurozone for each corresponding time period which is a key driver of exchange rate movements and capital flows. 
 
 **Ethical / Legal Considerations:**
 
@@ -212,7 +212,7 @@ All five datasets were programatically acquired using the FRED (Federal Reserve 
 
 As all of five datasets came from the same source (FRED API), not too much cleaning was required but the datasets had to be extensively standardized. For missing values, FRED represents them as ``NaN``. All five dataframes were scanned and their missing values were dropped using dropna() before further processing. For data standardization, we had to standardize the times format of all series as DXY and VIX are published as daily series while FEDFUNDS, ECB rate, and trade balance are published as monthly series. To standardize the daily series, they were resampled to monthly — DXY via resample('ME').last() and VIX via resample('ME').mean(). 
 
-After cleaning and integrating the datasets into a singular dataset (further explained below), we 
+After cleaning and integrating the datasets into a singular dataset (further explained below), we added four new columns to the merged dataset. The first column ``INT_DIFF``, which is computed as ``FEDFUNDS - ECB_RATE``, represents the interest rate differentials between US and Eurozone. The second column is ``DXY_next`` which is computed as DXY.shift(-1), the one-month-ahead DXY value which serves as the prediction target for all models. The third column ``DXY_Diff``, which computes log return of ``DXY`` and ``DXY_next``, represents the percentage change in log terms between ``DXY`` and ``DXY_next``. The fourth column ``TRADE_DEFICIT``, which converts the ``TRADE_BAL`` to a log-scaled measure, represents the trade deficit. After deriving these columns, ``FEDFUNDS`` and ``TRADE_BAL`` columns were dropped as we only needed the ``INT_DIFF`` and ``TRADE_DEFICIT`` for analysis and these variables didn't contribute to model development. 
 
 ---
 
