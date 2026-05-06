@@ -1,0 +1,31 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "DXY Macroeconomic Forecasting Dataset",
+  "description": "A multivariate time series dataset used to forecast the US Dollar Index using macroeconomic indicators including interest rates, market volatility, and trade balance data.",
+  "creator": {
+    "@type": "Person",
+    "name": "Nihanth Beeram and Bob Zou"
+  },
+  "dateCreated": "2026-05-06",
+  "temporalCoverage": "2006-01-01/2026-05-01",
+  "variableMeasured": [
+    "DXY",
+    "VIX",
+    "FEDFUNDS",
+    "ECB_RATE",
+    "TRADE_BAL",
+    "INT_DIFF",
+    "DXY_Diff"
+  ],
+  "keywords": [
+    "time series",
+    "macroeconomics",
+    "forecasting",
+    "machine learning",
+    "currency"
+  ],
+  "license": "MIT",
+  "measurementTechnique": "Time series aggregation and feature engineering",
+  "isAccessibleForFree": true
+}

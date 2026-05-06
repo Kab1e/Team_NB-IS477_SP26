@@ -22,6 +22,8 @@ def save_series(series, name):
     df.index.name = "DATE"
     df.index = pd.to_datetime(df.index)
     df = df.sort_index()
+    # Filter from 2006 onward
+    df = df[df.index >= "2006-01-01"]
 
     os.makedirs("data/raw", exist_ok=True)
 
