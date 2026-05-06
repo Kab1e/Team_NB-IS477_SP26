@@ -46,7 +46,7 @@ The data is accessed via the FRED website or API in CSV/JSON format. For this pr
 
 * **Structure:** Time series
 * **Frequency:** Daily
-* **File types:** CSV / JSON
+* **File types:** JSON via API (pandas series) -> converted to CSV
 * **Common attribute:** Date/Time Period
 
 **Variables:**
@@ -75,15 +75,15 @@ The data was programmatically retrieved from FRED API and converted into a CSV f
 
 **Coverage:**
 
-* Time range: 1990–present
-* Frequency: Daily
-* Market: U.S. equity markets
+* **Time range:** 1990–present (filtered to 2006 to present)
+* **Frequency:** Daily
+* **Market:** U.S. equity markets
 
 **Format:**
 
-* Structure: Time series
-* File types: CSV / JSON
-* Common attribute: Date/Time Period
+* **Structure:** Time series
+* **File types:** JSON via API (pandas series) -> converted to CSV
+* **Common attribute:** Date/Time Period
 
 **Variables:**
 
@@ -120,15 +120,15 @@ Both series are pulled separately via the FRED API and converted into a CSV file
 **Coverage:**
 
 * **Time Range:**
-  * FEDFUNDS: 1954–present (monthly)
-  * ECBDFR: 1999–present (monthly)
+  * FEDFUNDS: 1954–present (monthly - filtered to 2006 to present)
+  * ECBDFR: 1999–present (monthly - filtered to 2006 to present)
 * **Geography:** United States (FEDFUNDS) and Eurozone (ECBDFR)
 
 **Format:**
 
 * **Structure:** Time series (merged dataset)
 * **Frequency:** Monthly (after alignment)
-* 
+* **File types:** JSON via API (pandas series) -> converted to CSV
 * **Common attribute:** Date/Time Period
 
 **Variables:**
@@ -159,14 +159,14 @@ The data was programmatically retrieved from FRED API and converted into a CSV f
 
 **Coverage:**
 
-* **Time range:** 1960–present
+* **Time range:** 1960–present (filtered to 2006 to present)
 * **Frequency:** Monthly
 * **Geography:** United States
 
 **Format:**
 
 * **Structure:** Time series
-* **File types:** CSV / JSON
+* **File types:** JSON via API (pandas series) -> converted to CSV
 * **Common attribute:** Date/Time Period
 
 **Variables:**
