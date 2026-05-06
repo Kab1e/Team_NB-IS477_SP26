@@ -1,245 +1,251 @@
-import numpy as np
-import pandas as pd
-
-from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import (
-    LinearRegression, Ridge, Lasso, ElasticNet,
-    BayesianRidge, HuberRegressor, SGDRegressor
-)
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
-
-class LSTMModel(nn.Module):
-    def __init__(self, input_size, hidden_size=64, num_layers=2):
-        super().__init__()
-
-        self.lstm = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=num_layers,
-            batch_first=True
-        )
-
-        self.fc = nn.Linear(hidden_size, 1)
-
-    def forward(self, x):
-        out, _ = self.lstm(x)
-        out = out[:, -1, :]
-        return self.fc(out)
-
-def create_sequences(X, y, lookback=12):
-    Xs, ys = [], []
-    for i in range(lookback, len(X)):
-        Xs.append(X[i-lookback:i])
-        ys.append(y.iloc[i])
-    return np.array(Xs), np.array(ys)
-
-def train_lstm(X_train, y_train, X_test, y_test):
-
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-
-    X_train = torch.tensor(X_train, dtype=torch.float32)
-    y_train = torch.tensor(y_train, dtype=torch.float32).view(-1, 1)
-
-    X_test = torch.tensor(X_test, dtype=torch.float32)
-    y_test = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
-
-    train_loader = DataLoader(
-        TensorDataset(X_train, y_train),
-        batch_size=16,
-        shuffle=False
+def training():
+    from data_cleaning import load_data
+    from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
+    from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+    import numpy as np
+    from statsmodels.tsa.statespace.sarimax import SARIMAX
+    import itertools
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.linear_model import (
+        LinearRegression,
+        Ridge,
+        Lasso,
+        ElasticNet,
+        BayesianRidge,
+        HuberRegressor,
+        SGDRegressor,
     )
+    import pandas as pd
+    from sklearn.svm import SVR
+    import warnings
+    warnings.filterwarnings("ignore")
 
-    model = LSTMModel(input_size=X_train.shape[2]).to(device)
+    # Data Preparation
+    df = load_data()
 
-    criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    X = df[['DXY', 'VIX', 'ECB_RATE', 'TRADE_DEFICIT', 'INT_DIFF', 'YEAR', 'MONTH', 'QUARTER', 'AUDJPY_LOG']]
+    y = df['DXY_Diff']
 
-    # -------------------
-    # Training loop
-    # -------------------
-    for epoch in range(30):
-        model.train()
-        epoch_loss = 0
-
-        for xb, yb in train_loader:
-            xb, yb = xb.to(device), yb.to(device)
-
-            preds = model(xb)
-            loss = criterion(preds, yb)
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            epoch_loss += loss.item()
-
-        if epoch % 5 == 0:
-            print(f"Epoch {epoch} | Loss: {epoch_loss:.6f}")
-
-    # -------------------
-    # Evaluation
-    # -------------------
-    model.eval()
-    with torch.no_grad():
-        preds = model(X_test.to(device)).cpu().numpy().flatten()
-
-    return model, preds
-
-def train_models(df):
-
-    target = "DXY_return_next"
-
-    X = df.drop(columns=[target, "DATE", "DXY"], errors="ignore")
-    y = df[target]
-
-    split_idx = int(len(df) * 0.75)
-
-    X_train, X_test = X.iloc[:split_idx], X.iloc[split_idx:]
-    y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:]
+    split = int(len(df) * 0.75)
+    X_train, X_test = X.iloc[:split], X.iloc[split:]
+    y_train, y_test = y.iloc[:split], y.iloc[split:]
 
     cv = TimeSeriesSplit(n_splits=5)
 
+    # Model Training
+    # HistGradientBoostingRegressor
+    from sklearn.ensemble import HistGradientBoostingRegressor
+
+    HistGB_param_grid = {
+        "max_iter": [100, 500, 1000, 10_000, 100_000],
+        "learning_rate": [0.00001, 0.0001, 0.001, 0.01, 0.1, 1],
+        "max_depth": [1, 2, 3, 5, 7],
+        "min_samples_leaf": [5, 10, 20, 30],
+        "l2_regularization": [0.0, 0.1, 1.0, 3.0, 5.0],
+        "max_leaf_nodes": [8, 15, 31]
+    }
+
+    HistGB = GridSearchCV(
+        estimator=HistGradientBoostingRegressor(random_state=42, early_stopping=True, validation_fraction=0.15, n_iter_no_change=15),
+        param_grid=HistGB_param_grid,
+        scoring="neg_root_mean_squared_error",
+        cv=cv,
+        n_jobs=-1,
+        verbose=1,
+    )
+    HistGB.fit(X_train, y_train)
+
+    best_HistGB = HistGB.best_estimator_
+    y_pred_histgb = best_HistGB.predict(X_test)
+
+    print(f"Histogram Gradient Boosting Regressor")
+    print(f"Best params: {HistGB.best_params_}")
+    print(f"RMSE: {np.sqrt(mean_squared_error(y_test, y_pred_histgb)):.4f}")
+    print(f"MAE:  {mean_absolute_error(y_test, y_pred_histgb):.4f}")
+    print(f"R²:   {r2_score(y_test, y_pred_histgb):.4f}")
+
+
+
+    # SARIMAX
+    best_aic = np.inf
+    best_order = None
+    best_sarimax = None
+
+    for p, d, q in itertools.product(range(4), range(2), range(4)):
+        try:
+            mod = SARIMAX(y_train.values, exog=X_train, order=(p, d, q),
+                        enforce_stationarity=False, enforce_invertibility=False)
+            res = mod.fit(disp=False, maxiter=200)
+            if res.aic < best_aic:
+                best_aic = res.aic
+                best_order = (p, d, q)
+                best_sarimax = res
+        except Exception:
+            continue
+
+    y_pred_sarimax = best_sarimax.forecast(steps=len(y_test), exog=X_test)
+
+    print("SARIMAX")
+    print(f"Best order (p,d,q): {best_order}")
+    print(f"AIC:  {best_aic:.2f}")
+    print(f"RMSE: {np.sqrt(mean_squared_error(y_test, y_pred_sarimax)):.4f}")
+    print(f"MAE:  {mean_absolute_error(y_test, y_pred_sarimax):.4f}")
+    print(f"R²:   {r2_score(y_test, y_pred_sarimax):.4f}")
+
+
+
+    # Linear Model
+    scoring = {
+        "rmse": "neg_root_mean_squared_error",
+        "mae":  "neg_mean_absolute_error",
+        "mape": "neg_mean_absolute_percentage_error",
+        "r2":   "r2",
+    }
+    refit_metric = "rmse"
+
     models = {
-    "LinearRegression": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", LinearRegression())
-        ]),
-        {}
-    ),
+        "LinearRegression": (
+            Pipeline([("scaler", StandardScaler()), ("model", LinearRegression())]),
+            {
+                "model__fit_intercept": [True, False],
+            },
+        ),
+        "Ridge": (
+            Pipeline([("scaler", StandardScaler()), ("model", Ridge(random_state=42))]),
+            {
+                "model__alpha": [0.001, 0.01, 0.1, 1.0, 10.0, 100.0],
+                "model__solver": ["auto", "svd", "cholesky", "lsqr", "saga"],
+            },
+        ),
+        "Lasso": (
+            Pipeline([("scaler", StandardScaler()), ("model", Lasso(random_state=42, max_iter=10000))]),
+            {
+                "model__alpha": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0],
+                "model__selection": ["cyclic", "random"],
+            },
+        ),
+        "ElasticNet": (
+            Pipeline([("scaler", StandardScaler()), ("model", ElasticNet(random_state=42, max_iter=10000))]),
+            {
+                "model__alpha": [0.0001, 0.001, 0.01, 0.1, 1.0],
+                "model__l1_ratio": [0.1, 0.3, 0.5, 0.7, 0.9],
+            },
+        ),
+        "BayesianRidge": (
+            Pipeline([("scaler", StandardScaler()), ("model", BayesianRidge())]),
+            {
+                "model__alpha_1": [1e-7, 1e-6, 1e-5],
+                "model__alpha_2": [1e-7, 1e-6, 1e-5],
+                "model__lambda_1": [1e-7, 1e-6, 1e-5],
+                "model__lambda_2": [1e-7, 1e-6, 1e-5],
+            },
+        ),
+        "HuberRegressor": (
+            Pipeline([("scaler", StandardScaler()), ("model", HuberRegressor(max_iter=500))]),
+            {
+                "model__epsilon": [1.1, 1.35, 1.5, 2.0],
+                "model__alpha": [1e-5, 1e-4, 1e-3, 1e-2],
+            },
+        ),
+        "SGDRegressor": (
+            Pipeline([("scaler", StandardScaler()), ("model", SGDRegressor(random_state=42, max_iter=5000))]),
+            {
+                "model__loss": ["squared_error", "huber", "epsilon_insensitive"],
+                "model__penalty": ["l2", "l1", "elasticnet"],
+                "model__alpha": [1e-5, 1e-4, 1e-3, 1e-2],
+                "model__learning_rate": ["constant", "optimal", "invscaling", "adaptive"],
+                "model__eta0": [0.001, 0.01, 0.1],
+            },
+        ),
+    }
 
-    "Ridge": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", Ridge())
-        ]),
-        {
-            "model__alpha": [0.1, 1, 10]
-        }
-    ),
-
-    "Lasso": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", Lasso(max_iter=10000))
-        ]),
-        {
-            "model__alpha": [0.001, 0.01]
-        }
-    ),
-
-    "ElasticNet": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", ElasticNet(max_iter=10000))
-        ]),
-        {
-            "model__alpha": [0.001, 0.01, 0.1, 1.0],
-            "model__l1_ratio": [0.1, 0.5, 0.9]
-        }
-    ),
-
-    "BayesianRidge": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", BayesianRidge())
-        ]),
-        {
-            "model__alpha_1": [1e-6, 1e-5],
-            "model__alpha_2": [1e-6, 1e-5],
-            "model__lambda_1": [1e-6, 1e-5],
-            "model__lambda_2": [1e-6, 1e-5]
-        }
-    ),
-
-
-    "HuberRegressor": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", HuberRegressor(max_iter=500))
-        ]),
-        {
-            "model__epsilon": [1.1, 1.35, 1.5],
-            "model__alpha": [1e-5, 1e-4, 1e-3]
-        }
-    ),
-
-    "SGDRegressor": (
-        Pipeline([
-            ("scaler", StandardScaler()),
-            ("model", SGDRegressor(max_iter=5000, random_state=42))
-        ]),
-        {
-            "model__loss": ["squared_error", "huber"],
-            "model__penalty": ["l2", "l1", "elasticnet"],
-            "model__alpha": [1e-5, 1e-4, 1e-3],
-            "model__learning_rate": ["constant", "optimal", "adaptive"]
-        }
-    ),
-}
     results = []
+    best_estimators = {}
 
-    # -------------------
-    # sklearn models 
-    # -------------------
     for name, (pipe, grid) in models.items():
-
-        gs = GridSearchCV(pipe, grid, cv=cv, scoring="neg_root_mean_squared_error")
+        gs = GridSearchCV(
+            estimator=pipe,
+            param_grid=grid,
+            scoring=scoring,
+            refit=refit_metric,
+            cv=cv,
+            n_jobs=-1,
+            verbose=1,
+            return_train_score=True,
+        )
         gs.fit(X_train, y_train)
 
-        preds = gs.best_estimator_.predict(X_test)
+        best_estimators[name] = gs.best_estimator_
 
-        rmse = np.sqrt(mean_squared_error(y_test, preds))
-        mae = mean_absolute_error(y_test, preds)
-        r2 = r2_score(y_test, preds)
+        idx = gs.best_index_
+        row = {"model": name, "best_params": gs.best_params_}
+        for metric in scoring:
+            mean = gs.cv_results_[f"mean_test_{metric}"][idx]
+            std  = gs.cv_results_[f"std_test_{metric}"][idx]
 
-        results.append({"model": name, "rmse": rmse, "mae": mae, "r2": r2})
+            if metric != "r2":
+                mean, std = -mean, std
+            row[f"{metric}_mean"] = mean
+            row[f"{metric}_std"]  = std
+        results.append(row)
 
-        pd.DataFrame({
-            "actual": y_test.values,
-            "predicted": preds
-        }).to_csv(f"outputs/{name}_predictions.csv", index=False)
+    results_df = pd.DataFrame(results).sort_values("rmse_mean")
+    best_linear_name = results_df.iloc[0]["model"]
+    best_linear_model = best_estimators[best_linear_name]
 
-    # -------------------
-    # Pytorch LSTM
-    # -------------------
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    y_pred_linear = best_linear_model.predict(X_test)
 
-    lookback = 12
-    X_seq, y_seq = create_sequences(X_scaled, y, lookback)
+    print(f"Best Linear Model: {best_linear_name}")
+    print(f"RMSE: {np.sqrt(mean_squared_error(y_test, y_pred_linear)):.4f}")
+    print(f"MAE:  {mean_absolute_error(y_test, y_pred_linear):.4f}")
+    print(f"R²:   {r2_score(y_test, y_pred_linear):.4f}")
 
-    split_seq = int(len(X_seq) * 0.75)
 
-    X_train_seq = X_seq[:split_seq]
-    X_test_seq = X_seq[split_seq:]
+    # SVR
+    SVR_param_grid = {
+        "kernel": ["rbf"],
+        "C": [0.1, 1.0, 10.0, 100.0],
+        "epsilon": [0.01, 0.05, 0.1, 0.2],
+        "gamma": ["scale", "auto"],
+    }
 
-    y_train_seq = y_seq[:split_seq]
-    y_test_seq = y_seq[split_seq:]
+    best_svr = GridSearchCV(SVR(), SVR_param_grid, scoring="neg_root_mean_squared_error", cv=cv, n_jobs=-1)
+    best_svr.fit(X_train, y_train)
+    y_pred_svr = best_svr.predict(X_test)
 
-    lstm_model, lstm_preds = train_lstm(
-        X_train_seq, y_train_seq,
-        X_test_seq, y_test_seq
-    )
+    print("SVR (RBF)")
+    print(f"Best params: {best_svr.best_params_}")
+    print(f"RMSE: {np.sqrt(mean_squared_error(y_test, y_pred_svr)):.4f}")
+    print(f"MAE:  {mean_absolute_error(y_test, y_pred_svr):.4f}")
+    print(f"R²:   {r2_score(y_test, y_pred_svr):.4f}")
 
-    rmse = np.sqrt(mean_squared_error(y_test_seq, lstm_preds))
-    mae = mean_absolute_error(y_test_seq, lstm_preds)
-    r2 = r2_score(y_test_seq, lstm_preds)
 
-    results.append({"model": "LSTM", "rmse": rmse, "mae": mae, "r2": r2})
+    import joblib
+    joblib.dump(best_HistGB, "outputs/models/histgb.joblib")
+    joblib.dump(best_sarimax, "outputs/models/sarimax.joblib")
+    joblib.dump(best_linear_model, "outputs/models/linear_model.joblib")
+    joblib.dump(best_svr, "outputs/models/svr.joblib")
 
-    pd.DataFrame({
-        "actual": y_test_seq,
-        "predicted": lstm_preds
-    }).to_csv("outputs/LSTM_predictions.csv", index=False)
+    return best_HistGB, best_sarimax, best_linear_model, best_svr
 
-    results_df = pd.DataFrame(results).sort_values("rmse")
-    results_df.to_csv("outputs/model_performance.csv", index=False)
+def train_models(TRAIN_AGAIN = False):
+    import joblib
+    import os
+    if TRAIN_AGAIN == False and all(
+    os.path.exists(p) for p in [
+        "outputs/models/histgb.joblib",
+        "outputs/models/sarimax.joblib",
+        "outputs/models/linear_model.joblib",
+        "outputs/models/svr.joblib",
+    ]
+    ):
+        best_HistGB = joblib.load("outputs/models/histgb.joblib")
+        best_sarimax = joblib.load("outputs/models/sarimax.joblib")
+        best_linear_model = joblib.load("outputs/models/linear_model.joblib")
+        best_svr = joblib.load("outputs/models/svr.joblib")
 
-    return results_df
+    else:
+        best_HistGB, best_sarimax, best_linear_model, best_svr = training()
+
+    return best_HistGB, best_sarimax, best_linear_model, best_svr

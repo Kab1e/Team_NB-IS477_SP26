@@ -19,17 +19,22 @@ def load_raw_data():
         read_raw("VIX"),
         read_raw("FEDFUNDS"),
         read_raw("ECB_RATE"),
-        read_raw("TRADE_BAL")
+        read_raw("TRADE_BAL"),
+        read_raw("USDJPY"),
+        read_raw("AUDUSD")
     )
 
 
-def clean_series(dxy, vix, ff, ecb, trade):
+def clean_series(dxy, vix, ff, ecb, trade, jpy, aud):
     # Handle missing values within each dataset first
     dxy = dxy.dropna()
     vix = vix.dropna()
     ff = ff.dropna()
     ecb = ecb.dropna()
     trade = trade.dropna()
+    jpy = jpy.dropna()
+    aud = aud.dropna()
+
 
     # Monthly alignment AFTER cleaning
     dxy   = dxy.resample("ME").last()
@@ -37,14 +42,22 @@ def clean_series(dxy, vix, ff, ecb, trade):
     ff    = ff.resample("ME").last()
     ecb   = ecb.resample("ME").last()
     trade = trade.resample("ME").last()
+    jpy = jpy.resample('ME').last()
+    aud = aud.resample('ME').last()
 
-    return dxy, vix, ff, ecb, trade
+    # AUD-JPY Exchange Rate (For the purpose of another risk sentiment indicator) 
+    fx = jpy.join(aud, how='inner')
+    fx['AUDJPY'] = fx['AUDUSD'] * fx['USDJPY']
+    fx['AUDJPY_LOG'] = np.log(fx['AUDJPY'])
+    audjpy = fx[["AUDJPY_LOG"]]
+
+    return dxy, vix, ff, ecb, trade, audjpy
 
 def load_data():
 
-    dxy, vix, ff, ecb, trade = load_raw_data()
+    dxy, vix, ff, ecb, trade, jpy, aud = load_raw_data()
 
-    dxy, vix, ff, ecb, trade = clean_series(dxy, vix, ff, ecb, trade)
+    dxy, vix, ff, ecb, trade, audjpy = clean_series(dxy, vix, ff, ecb, trade, jpy, aud)
 
     merged = (
         dxy
@@ -52,20 +65,14 @@ def load_data():
         .join(ff, how="inner")
         .join(ecb, how="inner")
         .join(trade, how="inner")
+        .join(audjpy, how="inner")
     )
 
     # Feature Engineering
     merged["INT_DIFF"] = merged["FEDFUNDS"] - merged["ECB_RATE"]
-
-    merged["DXY_return_next"] = (
-        np.log(merged["DXY"].shift(-1)) - np.log(merged["DXY"])
-    )
-
-    merged["d_VIX"] = merged["VIX"].diff()
-    merged["d_FEDFUNDS"] = merged["FEDFUNDS"].diff()
-    merged["d_ECB_RATE"] = merged["ECB_RATE"].diff()
-    merged["d_TRADE_BAL"] = merged["TRADE_BAL"].diff()
-    merged["d_INT_DIFF"] = merged["INT_DIFF"].diff()
+    merged['DXY_next'] = merged['DXY'].shift(-1)
+    merged["DXY_Diff"] = np.log(merged["DXY_next"] / merged["DXY"])
+    merged["TRADE_DEFICIT"] = np.log(-merged["TRADE_BAL"])
 
     merged = merged.dropna().reset_index()
 
@@ -74,5 +81,7 @@ def load_data():
     merged["QUARTER"] = merged["DATE"].dt.quarter
 
     merged = merged.sort_values("DATE").reset_index(drop=True)
+
+    merged = merged.drop(columns= ["FEDFUNDS", "TRADE_BAL"])
 
     return merged

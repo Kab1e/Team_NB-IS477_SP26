@@ -45,7 +45,9 @@ def main():
         "VIX": "VIXCLS",
         "FEDFUNDS": "FEDFUNDS",
         "ECB_RATE": "ECBDFR",
-        "TRADE_BAL": "BOPGSTB"
+        "TRADE_BAL": "BOPGSTB",
+        "USDJPY" : "DEXJPUS",
+        "AUDUSD" : "DEXUSAL"
     }
 
     for name, series_id in datasets.items():
