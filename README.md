@@ -189,6 +189,75 @@ This dataset represents the difference between U.S. exports and imports of goods
 * No sensitive or personal data
 * Attribution to BEA and FRED required
 
+### USD/JPY Exchange Rate
+
+**Source:** Board of Governors of the Federal Reserve System via Federal Reserve Bank of St. Louis
+
+**Dataset Location:** data/raw/USDJPY.csv
+
+**Acquisition Method:**
+The data was programmatically retrieved from FRED API and converted into a CSV file.
+
+**Coverage:**
+
+* **Time Range**: 1971–present
+* **Frequency**: Daily
+* **Geography**: United States / Japan
+
+**Format:**
+
+* **Structure**: Time series
+* **File types**: CSV / JSON
+* **Common attribute**: Date/Time Period
+
+**Variables:**
+``DATE`` - Observation date
+``DEXJPUS`` - Japanese Yen per 1 U.S. Dollar (noon buying rate)
+
+**Description:**
+This dataset represents the daily exchange rate between the U.S. dollar and the Japanese yen. The yen is widely regarded as a "safe haven" currency — during periods of market stress, investors tend to unwind carry trades and move capital into yen-denominated assets, causing the yen to appreciate. This series is used in conjunction with the AUD/USD rate to construct the AUD/JPY cross rate, a composite risk sentiment indicator.
+Ethical / Legal Considerations:
+
+* Public government dataset
+* No sensitive or personal data
+* Requires citation of original central bank sources and FRED
+
+### AUD/USD Exchange Rate
+
+**Source:** Board of Governors of the Federal Reserve System via Federal Reserve Bank of St. Louis
+
+**Dataset Location:** ``data/raw/AUDUSD.csv``
+
+**Acquisition Method:**
+The data was programmatically retrieved from FRED API and converted into a CSV file.
+
+**Coverage:**
+
+* **Time Range:** 1971–present
+* **Frequency:** Daily
+* **Geography:** United States / Australia
+
+**Format:**
+
+* **Structure:** Time series
+* **File types:** CSV / JSON
+* **Common attribute:** Date/Time Period
+
+**Variables:**
+
+``DATE`` - Observation date
+
+``DEXUSAL`` - U.S. Dollars per 1 Australian Dollar (noon buying rate)
+
+**Description:**
+This dataset represents the daily exchange rate between the Australian dollar and the U.S. dollar. The Australian dollar is a commodity-linked, high-yield "risk-on" currency — it tends to appreciate during periods of global economic optimism and sell off sharply during risk-off episodes. Combined with the USD/JPY rate, the derived AUD/JPY cross rate (computed as AUDUSD × USDJPY) serves as a pure risk sentiment proxy in our feature set, capturing risk-on versus risk-off capital flows that VIX alone may not fully reflect.
+
+**Ethical / Legal Considerations:**
+
+* Publicly available government data; no usage restrictions
+* No personally identifiable information (PII)
+* Must cite the Federal Reserve Board and FRED as the data source
+
 ___
 
 ## Data Quality Assessment
@@ -242,10 +311,21 @@ ___
 
 ## Findings and Future Work
 
+The first and most important finding was methodological. Our initial model formulation, which predicted the next-month DXY level using current DXY as a feature, appeared to perform well visually but was illusory. The correlation between DXY and DXY_next was approximately 0.99, and the best linear model achieved only a 1.5% RMSE improvement over a naive persistence baseline (predicting that next month's DXY equals this month's). The model had effectively learned the identity function. This finding aligns with the Meese-Rogoff puzzle (1983), which established that exchange rate models consistently fail to outperform a random walk in out-of-sample forecasting — a result that has held for over four decades in the academic literature.
+
+After identifying this issue, we reformulated the problem. We replaced the target with the log return of DXY, and rebuilt features as first differences of macroeconomic variables to capture changes rather than levels. This reformulation eliminated the autocorrelation artifact and produced meaningful out-of-sample results.
+Across the model families we tested — linear models (Ridge, Lasso, ElasticNet, BayesianRidge, HuberRegressor, SGDRegressor), histogram-based gradient boosting, support vector regression, and SARIMAX — we found that the macro features explain a modest but real share of next-month DXY return variance. An R-squared of approximately 0.05–0.08 on monthly FX returns is consistent with what the academic literature considers a meaningful result in this domain. OLS regression identified VIX and the interest rate differential as the two statistically significant predictors, while temporal features (year, month) and the trade deficit were not significant and were dropped via backward elimination.
+
+We ultimately decided against using LSTM (Long Short-Term Memory) networks for this project because our dataset contains only 241 monthly observations. LSTMs are deep learning models that require substantially more training data to learn meaningful temporal patterns without overfitting. With 241 rows, an LSTM would almost certainly memorize the training set rather than generalize, and there would not be enough data to construct a proper train/validation/test split that leaves sufficient samples in each partition. 
+
+For future work, several directions could improve the model. First, adding lagged returns of DXY as autoregressive features would let models capture momentum and mean-reversion dynamics directly. Second, the AUD/JPY cross rate was included as a risk sentiment proxy but its contribution relative to VIX should be evaluated more carefully, given that JPY constitutes 13.6% of the DXY basket and introduces partial endogeneity. Third, expanding the feature set to include commodity prices (oil, gold), yield curve slope, or positioning data (CFTC Commitments of Traders) could provide additional predictive signal. 
 ___
 
 ## Challenges
 
+The most significant challenge was the target formulation problem described above and in our status report. The near-perfect visual fit of our initial models was misleading. Specifically, comparison against the naive persistence baseline, we identified that the model was not learning anything beyond the identity mapping. This experience reinforced that visual inspection of predictions is insufficient without a formal baseline comparison, particularly for highly autocorrelated time series.
+
+A second challenge was the small sample size. With only 241 monthly observations spanning 2006 to 2026, we had limited data for training complex models. This constrained our hyperparameter search spaces and ruled out data-hungry approaches like LSTMs or deep neural networks. We addressed this by favoring models with strong regularization (high min_samples_leaf, shallow tree depth for HistGradientBoosting, L2 penalties for linear models) and using TimeSeriesSplit cross-validation to respect the temporal ordering of observations.
 
 ---
 
