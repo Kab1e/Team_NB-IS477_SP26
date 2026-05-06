@@ -2,8 +2,13 @@
 
 
 ## Project Summary
-Our aim in this project is to ***. Specifically, our research was focused on a single question: ***. 
+Our aim in this project is to develop a multivariate predictive model that forecasts the strength of US Dollar Index (DXY) over a one-month horizon using historical macroeconomic data from 2006 to present day. Specifically, our research was focused on a single question: To what extent can a multivariate predictive model accurately forecast the strength of the US Dollar Index (DXY) on a one-month time horizon, using *US-Eurozone interest rate differentials, global market volatility (VIX), and the US trade balance*?. 
 
+The movement of US Dollar Index is heavily influenced by international market dynamics and other macroeconomic indictors. We wanted to better understand what factors actually play a role in determining the strength of the US Dollar worldwide. The factors the we choose to explore were the the interest rate differentials between the United States and the Eurozone, global market volatility measured by the VIX index, the U.S. trade balance (or trade deficit), and AUD-JPY exchange rates. For the modeling portion, we decided to test various machine learning models like Lasso regression or SGDRegressor. The performance of each model was futher visualized through a Streamlit dashboard that visualized the performance of each model and showed each model's prediction of the next month DXY value.
+
+For our file structure, all datasets have a raw CSV file and SHA hash, which located within their respective folders in the ``data/`` directory. The integrated dataset has a cleaned CSV file and a JSON file documenting the overall cleaning history. This data is also located directly in ``data/``. Scripts for data acquisation, hash generation, quality analysis, data cleaning, integration, and analysis (streamlit dashboard) are in ``scripts/``. A ``outputs/`` folder contains the models, and ``requirements.txt`` records all software dependencies.
+
+To summarize our findings, ***
 
 ---
 
