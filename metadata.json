@@ -1,8 +1,8 @@
 {
   "@context": "https://schema.org/",
   "@type": "Dataset",
-  "name": "DXY Macroeconomic Forecasting Dataset",
-  "description": "A multivariate time series dataset used to forecast the US Dollar Index using macroeconomic indicators including interest rates, market volatility, and trade balance data.",
+  "name": "DXY Forecasting Dataset",
+  "description": "A multivariate monthly time series dataset designed for forecasting the US Dollar Index (DXY) using macroeconomic and financial indicators including interest rates, volatility indices, exchange rates, and trade balance data from FRED. The dataset includes engineered features such as interest rate differentials and log-transformed variables.",
   "creator": {
     "@type": "Person",
     "name": "Nihanth Beeram and Bob Zou"
@@ -15,17 +15,22 @@
     "FEDFUNDS",
     "ECB_RATE",
     "TRADE_BAL",
+    "USDJPY",
+    "AUDUSD",
+    "AUDJPY_LOG",
     "INT_DIFF",
-    "DXY_Diff"
+    "DXY_Diff",
+    "TRADE_DEFICIT"
   ],
   "keywords": [
     "time series",
     "macroeconomics",
     "forecasting",
     "machine learning",
-    "currency"
+    "currency markets",
+    "exchange rates"
   ],
   "license": "MIT",
-  "measurementTechnique": "Time series aggregation and feature engineering",
+  "measurementTechnique": "Data cleaning, monthly resampling, time-series alignment, feature engineering (log transformations, differencing, and rate differentials)",
   "isAccessibleForFree": true
 }

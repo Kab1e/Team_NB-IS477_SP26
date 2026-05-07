@@ -1,0 +1,13 @@
+MERGE STATISTICS
+──────────────────────────────
+
+DXY: 5305
+VIX: 5307
+FEDFUNDS: 244
+ECB_RATE: 7431
+TRADE_BAL: 243
+USDJPY: 5305
+AUDUSD: 5305
+
+Final merged dataset: 242
+Merge rate: 99.59%

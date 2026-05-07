@@ -33,7 +33,7 @@ def main():
     print("✅ cleaned_data.csv saved in data/processed/")
 
     # 3. MERGE STATISTICS
-    print("\n📊 Step 3: Computing post-merge statistics...")
+    print("\n📊 Step 3: Computing merge statistics...")
 
     raw_sizes = {
         "DXY": len(pd.read_csv("data/raw/DXY.csv")),
@@ -58,7 +58,7 @@ def main():
     print(f"\n  Final merged dataset: {cleaned_size} rows")
     print(f"  Merge rate (vs smallest dataset): {merge_rate:.2%}")
 
-    with open("outputs/post_merge_report.txt", "w") as f:
+    with open("data/processed/merge_report.txt", "w") as f:
         f.write("MERGE STATISTICS\n")
         f.write("─" * 30 + "\n\n")
         for name, size in raw_sizes.items():
@@ -66,7 +66,7 @@ def main():
         f.write(f"\nFinal merged dataset: {cleaned_size}\n")
         f.write(f"Merge rate: {merge_rate:.2%}\n")
 
-    print("✅ Merge report saved to outputs/post_merge_report.txt")
+    print("✅ Merge report saved to data/processed/merge_report.txt")
 
     # 4. MODEL TRAINING
     print("\n🤖 Step 4: Training models...")
@@ -122,7 +122,7 @@ def main():
 
     # 7. LAUNCH STREAMLIT APP
     print("\n📡 Step 7: Launching dashboard...")
-    subprocess.run(["streamlit", "run", "app.py"])
+    subprocess.run(["streamlit", "run", "scripts/app.py"])
 
 
 if __name__ == "__main__":
