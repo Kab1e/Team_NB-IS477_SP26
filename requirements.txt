@@ -2,9 +2,7 @@ pandas
 fredapi
 numpy
 matplotlib
-dotenv
+python-dotenv
 seaborn
 streamlit
-hashlib
-os
 statsmodels
