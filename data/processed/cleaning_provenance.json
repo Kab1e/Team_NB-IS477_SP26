@@ -5,14 +5,42 @@
     "script": "script/data_cleaning.py"
   },
 
-  "sources": {
-    "DXY":       { "file": "data/raw/DXY.csv",       "description": "US Dollar Index" },
-    "VIX":       { "file": "data/raw/VIX.csv",       "description": "CBOE Volatility Index" },
-    "FEDFUNDS":  { "file": "data/raw/FEDFUNDS.csv",  "description": "Federal Funds Rate" },
-    "ECB_RATE":  { "file": "data/raw/ECB_RATE.csv",  "description": "ECB Main Refinancing Rate" },
-    "TRADE_BAL": { "file": "data/raw/TRADE_BAL.csv", "description": "US Trade Balance" },
-    "USDJPY":    { "file": "data/raw/USDJPY.csv",    "description": "USD/JPY Exchange Rate" },
-    "AUDUSD":    { "file": "data/raw/AUDUSD.csv",    "description": "AUD/USD Exchange Rate" }
+"sources": {
+    "DXY": {
+      "file": "data/raw/DXY.csv",
+      "description": "US Dollar Index",
+      "checksum": "292802b1cc027e90b791f93a1d0775f12335ffd3497ced838bd8e26d399808f5"
+    },
+    "VIX": {
+      "file": "data/raw/VIX.csv",
+      "description": "CBOE Volatility Index",
+      "checksum": "de36a3c079617e57019b24b719328cee8c11e98ca7d288a8754511c9889ae283"
+    },
+    "FEDFUNDS": {
+      "file": "data/raw/FEDFUNDS.csv",
+      "description": "Federal Funds Rate",
+      "checksum": "784a2a4ce2d26172b4ebf9693c0b1dc4b077d4ce932134270c532dbfd1a8d274"
+    },
+    "ECB_RATE": {
+      "file": "data/raw/ECB_RATE.csv",
+      "description": "ECB Main Refinancing Rate",
+      "checksum": "c252972f3df19dc8ca8f3231ed3cee4baf1f3417f05c7f368451d7de33a15144"
+    },
+    "TRADE_BAL": {
+      "file": "data/raw/TRADE_BAL.csv",
+      "description": "US Trade Balance",
+      "checksum": "0d5c58f9039dda9b2ce450b5e21a1221cd895217a7247018bfa07501c645e29d"
+    },
+    "USDJPY": {
+      "file": "data/raw/USDJPY.csv",
+      "description": "USD/JPY Exchange Rate",
+      "checksum": "d3ba70be64cf16e171a64e60d52aa268a203a2ad6ba8015632b97bf76597d72a"
+    },
+    "AUDUSD": {
+      "file": "data/raw/AUDUSD.csv",
+      "description": "AUD/USD Exchange Rate",
+      "checksum": "d13d5ede3dcbdeaa552658742b88335f3c6e35515d5dcf611d9f4166855ae3bd"
+    }
   },
 
   "cleaning_steps": [
