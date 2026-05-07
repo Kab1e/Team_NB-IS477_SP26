@@ -2,7 +2,7 @@
   "@context": "https://schema.org/",
   "@type": "Dataset",
   "name": "DXY Forecasting Dataset",
-  "description": "A multivariate monthly time series dataset designed for forecasting the US Dollar Index (DXY) using macroeconomic and financial indicators including interest rates, volatility indices, exchange rates, and trade balance data from FRED. The dataset includes engineered features such as interest rate differentials and log-transformed variables.",
+  "description": "A multivariate monthly time series dataset designed for forecasting the US Dollar Index (DXY) using indicators such as interest rates, volatility indices, exchange rates, and trade balance data from FRED. The dataset includes engineered features such as interest rate differentials and log-transformed variables.",
   "creator": {
     "@type": "Person",
     "name": "Nihanth Beeram and Bob Zou"

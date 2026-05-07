@@ -1,0 +1,111 @@
+{
+  "provenance": {
+    "created": "2026-05-06",
+    "description": "Cleaning and transformation log for DXY Forecast Dataset",
+    "script": "script/data_cleaning.py"
+  },
+
+  "sources": {
+    "DXY":       { "file": "data/raw/DXY.csv",       "description": "US Dollar Index" },
+    "VIX":       { "file": "data/raw/VIX.csv",       "description": "CBOE Volatility Index" },
+    "FEDFUNDS":  { "file": "data/raw/FEDFUNDS.csv",  "description": "Federal Funds Rate" },
+    "ECB_RATE":  { "file": "data/raw/ECB_RATE.csv",  "description": "ECB Main Refinancing Rate" },
+    "TRADE_BAL": { "file": "data/raw/TRADE_BAL.csv", "description": "US Trade Balance" },
+    "USDJPY":    { "file": "data/raw/USDJPY.csv",    "description": "USD/JPY Exchange Rate" },
+    "AUDUSD":    { "file": "data/raw/AUDUSD.csv",    "description": "AUD/USD Exchange Rate" }
+  },
+
+  "cleaning_steps": [
+    {
+      "step": 1,
+      "action": "parse_dates",
+      "description": "DATE column parsed to datetime and set as index; rows sorted ascending by date",
+      "applied_to": ["DXY", "VIX", "FEDFUNDS", "ECB_RATE", "TRADE_BAL", "USDJPY", "AUDUSD"]
+    },
+    {
+      "step": 2,
+      "action": "drop_na",
+      "description": "Rows with any missing values dropped from each series individually before resampling",
+      "applied_to": ["DXY", "VIX", "FEDFUNDS", "ECB_RATE", "TRADE_BAL", "USDJPY", "AUDUSD"]
+    },
+    {
+      "step": 3,
+      "action": "resample_monthly",
+      "description": "Each series resampled to month-end (ME) frequency",
+      "applied_to": {
+        "last": ["DXY", "FEDFUNDS", "ECB_RATE", "TRADE_BAL", "USDJPY", "AUDUSD"],
+        "mean": ["VIX"]
+      }
+    }
+  ],
+
+  "derived_variables": [
+    {
+      "variable": "AUDJPY",
+      "formula": "AUDUSD * USDJPY",
+      "description": "Synthetic AUD/JPY cross rate used as risk sentiment indicator"
+    },
+    {
+      "variable": "AUDJPY_LOG",
+      "formula": "log(AUDJPY)",
+      "description": "Natural log of AUD/JPY cross rate"
+    },
+    {
+      "variable": "INT_DIFF",
+      "formula": "FEDFUNDS - ECB_RATE",
+      "description": "Interest rate differential between the Fed and ECB"
+    },
+    {
+      "variable": "DXY_next",
+      "formula": "DXY.shift(-1)",
+      "description": "One-period forward DXY value used to compute log return"
+    },
+    {
+      "variable": "DXY_Diff",
+      "formula": "log(DXY_next / DXY)",
+      "description": "Log return of DXY; target variable for prediction"
+    },
+    {
+      "variable": "TRADE_DEFICIT",
+      "formula": "log(-TRADE_BAL)",
+      "description": "Log of the absolute trade deficit (TRADE_BAL is negative)"
+    },
+    {
+      "variable": "YEAR",
+      "formula": "DATE.dt.year",
+      "description": "Calendar year extracted from DATE"
+    },
+    {
+      "variable": "MONTH",
+      "formula": "DATE.dt.month",
+      "description": "Calendar month extracted from DATE"
+    },
+    {
+      "variable": "QUARTER",
+      "formula": "DATE.dt.quarter",
+      "description": "Calendar quarter extracted from DATE"
+    }
+  ],
+
+  "merge": {
+    "method": "inner join on DATE index",
+    "order": ["DXY", "VIX", "FEDFUNDS", "ECB_RATE", "TRADE_BAL", "AUDJPY_LOG"],
+    "description": "All series joined on month-end date index; only dates present in all series are retained"
+  },
+
+  "dropped_columns": {
+    "columns": ["FEDFUNDS", "TRADE_BAL"],
+    "reason": "Replaced by derived features INT_DIFF and TRADE_DEFICIT respectively"
+  },
+
+  "final_output": {
+    "file": "data/processed/cleaned_data.csv",
+    "columns": [
+      "DATE", "DXY", "VIX", "ECB_RATE", "AUDJPY_LOG",
+      "INT_DIFF", "DXY_next", "DXY_Diff", "TRADE_DEFICIT",
+      "YEAR", "MONTH", "QUARTER"
+    ],
+    "frequency": "monthly",
+    "index": "reset (integer)"
+  }
+}

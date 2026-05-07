@@ -1,0 +1,20 @@
+================================================================================
+DATA DICTIONARY
+Project : IS-477
+Dataset : data/processed/cleaned_data.csv
+Updated : 2026-05-06
+================================================================================
+Variable        Type      Unit                Description
+-----------     -----     ----------------    ----------------------------------------
+DATE            datetime  YYYY-MM-DD          Month-end observation date
+DXY             float     Index (base=100)    US Dollar Index
+VIX             float     Index Points (%)    CBOE Volatility Index; risk sentiment proxy
+ECB_RATE        float     %                   ECB Main Refinancing Rate
+AUDJPY_LOG      float     Log exchange rate   Natural log of synthetic AUD/JPY
+INT_DIFF        float     Percentage Points   FEDFUNDS rate minus ECB rate (interest rate differential)
+DXY_next        float     Index (base=100)    One-month forward DXY; intermediate variable
+DXY_Diff        float     Log Return          Monthly log return of DXY; target variable
+TRADE_DEFICIT   float     Log (millions USD)  Natural log of absolute US trade deficit
+YEAR            int       Year                Year extracted from DATE
+MONTH           int       1-12                Month extracted from DATE
+QUARTER         int       1-4                 Quarter extracted from DATE
