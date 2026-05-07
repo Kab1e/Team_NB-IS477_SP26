@@ -15,7 +15,7 @@ To summarize our findings, our initial model formulation appeared to perform wel
 ## Contributors
 
 ### Nihanth:
-- [x] Ethical data handling (Module 2)
+- [x] Data collection and acquisition (Module 3) 
 - [x] Storage and organization (Modules 4/5)
 - [x] Data quality (Module 9)
 - [x] Data integration (Modules 7/8)
@@ -23,7 +23,7 @@ To summarize our findings, our initial model formulation appeared to perform wel
 
 ### Bob:
 - [x] Data lifecycle (Module 1)
-- [x] Data collection and acquisition (Module 3)
+- [x] Ethical data handling (Module 2)
 - [x] Data cleaning (Module 10)
 - [x] Reproducibility and transparency (Module 13)
 - [x] Metadata and data documentation (Module 15)
@@ -261,23 +261,23 @@ This dataset represents the daily exchange rate between the Australian dollar an
 ___
 
 ## Data Quality Assessment
-Data quality is pretty important to this project because we had to compare and integrate sevene datasets that each had different purposes and even collected from different geographical locations. The data quality assessment is further explained below: 
+Data quality is pretty important to this project because we had to compare and integrate sevene datasets which each had different purposes and even were collected from different geographical locations. The data quality assessment is further explained below: 
 
 **Completeness and Missingness**
 
-***
+Each dataset was evaluated for missing values and coverage across the time series. Not too many missing values were present in the data but the missing values that were present in the data was caused by differences in reporting schedules. The missing values were identified and then dropped to ensure alignment across datasets before merging. 
 
 **Accuracy**
 
-***
+Accuracy was assessed by checking the reliability of the sources where the datasets came from and check if there are any clear outliers within the datasets. As the data did come from reliable sources, we assumed the data present was reliably true which was the case. We didn't find any outliers in any of the datasets that we checked.  
 
 **Consistency**
 
-***
+For consistency, it was done by checking if all of the datasets followed an uniform structure in terms of date formating or frequency. All time series were standardized to a common datetime format (YYYY-MM-DD) and aligned to a monthly frequency where necessary. At the unit level, each series originates from a consistent and well-documented source, so no unit conversions were required. However, differences in scale across variables like percentages or index values were preserved, as they reflect the inherent nature of the underlying economic indicators.
 
 **Issues Identified and Fixes**
 
-***
+Several issues were identified during the cleaning process. Some of these issues are differences in observational frequencies and inconsistent date formats. To address these issues, all datasets were converted into a standardized datetime index, resampled to a common frequency, and cleaned using missing-value removal techniques. After these adjustments, the datasets were successfully integrated into a unified dataset suitable for analysis and modeling which further explained below. 
 
 ---
 
@@ -419,8 +419,68 @@ The pipeline should automatically run the Streamlit dashboard which will open a 
 ---
 
 ## Workflow
-
+For the workflow, the command `python scripts/run_all.py` will execute the full pipeline in order: data acquisition, data cleaning, integration, model training, and dashboard/visualization generation. 
 
 ---
 
 ## Licensing
+
+### Code License
+This project's code is released under the MIT License. See [`LICENSE`](https://github.com/Kab1e/Team_NB-IS477_SP26/blob/main/LICENSE) in the repository root.
+
+### Data Licenses 
+
+**Nominal Broad US Dollar Index (DXY)**
+* **Source:** Board of Governors of the Federal Reserve System (US) via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** Board of Governors of the Federal Reserve System (US), retrieved from FRED
+
+**CBOE Volatility Index (VIX)**
+* **Source:** Chicago Board Options Exchange via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** Chicago Board Options Exchange, retrieved from FRED
+
+**Federal Funds Effective Rate (FEDFUNDS)**
+* **Source:** Board of Governors of the Federal Reserve System (US) via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** Board of Governors of the Federal Reserve System (US), retrieved from FRED
+
+**ECB Deposit Facility Rate for Euro Area(ECBDFR)**
+* **Source:** European Central Bank via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** European Central BanK, retrieved from FRED
+
+**Trade Balance: Goods and Services, Balance of Payments Basis (BOPGSTB)**
+* **Source:** U.S. Bureau of Economic Analysis; U.S. Census Bureau via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** U.S. Bureau of Economic Analysis; U.S. Census Bureau, retrieved from FRED
+
+**Japanese Yen to U.S. Dollar Spot Exchange Rate (DEXJPUS)**
+* **Source:** Board of Governors of the Federal Reserve System (US) via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** Board of Governors of the Federal Reserve System (US), retrieved from FRED
+
+**U.S. Dollars to Australian Dollar Spot Exchange Rate (DEXUSAL)**
+* **Source:** Board of Governors of the Federal Reserve System (US) via FRED®
+* **License:** Public Domain
+* **Terms:** Freely available for use and redistribution
+* **Required Citation:** Board of Governors of the Federal Reserve System (US), retrieved from FRED
+
+### Third-Party Software 
+* **pandas:** BSD 3-Clause License
+* **fredapi:** MIT License
+* **numpy:** BSD 3-Clause License
+* **matplotlib:** PSF License
+* **dotenv:** BSD 3-Clause License
+* **seaborn:** BSD 3-Clause License
+* **streamlit:** Apache 2.0 License
+* **hashlib:** PSF License (Python Standard Library)
+* **os:** PSF License (Python Standard Library)
+* **statsmodels:** BSD 3-Clause License
+
