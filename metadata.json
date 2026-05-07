@@ -3,12 +3,12 @@
   "@type": "Dataset",
   "name": "DXY Forecasting Dataset",
   "description": "A multivariate monthly time series dataset designed for forecasting the US Dollar Index (DXY) using indicators such as interest rates, volatility indices, exchange rates, and trade balance data from FRED. The dataset includes engineered features such as interest rate differentials and log-transformed variables.",
-  "creator": {
-    "@type": "Person",
-    "name": "Nihanth Beeram and Bob Zou"
-  },
+  "creator": [
+    { "@type": "Person", "name": "Nihanth Beeram" },
+    { "@type": "Person", "name": "Bob Zou" }
+  ],
   "dateCreated": "2026-05-06",
-  "temporalCoverage": "2006-01-01/2026-05-01",
+  "temporalCoverage": "2006-01-01/2026-02-28",
   "variableMeasured": [
     "DXY",
     "VIX",
@@ -30,7 +30,8 @@
     "currency markets",
     "exchange rates"
   ],
-  "license": "MIT",
+  "license": "https://opensource.org/licenses/MIT",
   "measurementTechnique": "Data cleaning, monthly resampling, time-series alignment, feature engineering (log transformations, differencing, and rate differentials)",
   "isAccessibleForFree": true
+  "url": "https://github.com/Kab1e/Team_NB-IS477_SP26",
 }
