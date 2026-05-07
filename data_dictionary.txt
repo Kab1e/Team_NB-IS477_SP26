@@ -1,6 +1,6 @@
 ================================================================================
 DATA DICTIONARY
-Project : IS-477
+Project : Forecasting US Dollar Index (Team_NB-IS477_SP26)
 Dataset : data/processed/cleaned_data.csv
 Updated : 2026-05-06
 ================================================================================
