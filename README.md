@@ -1,6 +1,6 @@
 # Forecasting the U.S. Dollar Index Using Macroeconomic Indicators
 
-Deliverable: https://kab1e-team-nb-is477-sp26-scriptsapp-zccklv.streamlit.app
+https://kab1e-team-nb-is477-sp26-scriptsapp-zccklv.streamlit.app
 
 ## Project Summary
 Our aim in this project is to develop a multivariate predictive model that forecasts the strength of US Dollar Index (DXY) over a one-month horizon using historical macroeconomic data from 2006 to present day. Specifically, our research was focused on a single question: To what extent can a multivariate predictive model accurately forecast the strength of the US Dollar Index (DXY) on a one-month time horizon, using *US-Eurozone interest rate differentials, global market volatility (VIX), and the US trade balance*?. 
